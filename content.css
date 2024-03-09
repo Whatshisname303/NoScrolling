@@ -1,0 +1,21 @@
+#secondary {
+    display: none;
+}
+
+.ytd-two-column-browse-results-renderer > #contents > .ytd-rich-grid-renderer {
+    display: none;
+}
+
+#chips * {
+    display: none;
+}
+
+#guide-inner-content {
+    display: none;
+}
+
+ytd-notification-topbar-button-renderer * {
+    display: none;
+    flex: 0;
+    max-width: 0px;
+}
