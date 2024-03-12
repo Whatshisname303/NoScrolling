@@ -1,3 +1,5 @@
+let activeTimeout = null;
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({
         inputWhen: 0,
@@ -10,26 +12,32 @@ chrome.runtime.onInstalled.addListener(() => {
 
 function refresh() {
     chrome.storage.sync.get(["scheduledStart", "scheduledEnd"]).then(({scheduledStart, scheduledEnd}) => {
-        chrome.tabs.query({url: "https://www.youtube.com/*"}).then((tabs) => {
+        chrome.tabs.query({url: "https://www.youtube.com/*"}).then(async (tabs) => {
             const currentTime = new Date().getTime();
 
-            if (scheduledStart < currentTime && currentTime < scheduledEnd) {
+            if (currentTime > scheduledStart && currentTime < scheduledEnd) {
                 for (const tab of tabs) {
+                    console.log("multi removed");
                     chrome.scripting.removeCSS({
                         files: ["content.css"],
                         target: {tabId: tab.id}
                     });
                 }
-                setTimeout(() => {
+                if (activeTimeout) {
+                    clearTimeout(activeTimeout)
+                }
+                activeTimeout = setTimeout(() => {
                     refresh();
                 }, scheduledEnd - currentTime + 2000);
 
             } else {
                 for (const tab of tabs) {
+                    console.log("removed");
                     chrome.scripting.removeCSS({
                         files: ["content.css"],
                         target: {tabId: tab.id}
                     });
+                    console.log("inserted")
                     chrome.scripting.insertCSS({
                         files: ["content.css"],
                         target: {tabId: tab.id}
@@ -37,7 +45,10 @@ function refresh() {
                 }
 
                 if (scheduledStart > currentTime) {
-                    setTimeout(() => {
+                    if (activeTimeout) {
+                        clearTimeout(activeTimeout);
+                    }
+                    activeTimeout = setTimeout(() => {
                         refresh();
                     }, scheduledStart - currentTime + 2000);
                 }
@@ -46,16 +57,14 @@ function refresh() {
     })
 }
 
-chrome.tabs.onUpdated.addListener((_, __, tab) => {
-    if (tab.url.startsWith("https://www.youtube.com")) {
+chrome.tabs.onUpdated.addListener((_, info, tab) => {
+    if (tab.url.startsWith("https://www.youtube.com") && info.status == "complete") {
         refresh();
     }
 });
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
+chrome.storage.onChanged.addListener((changes) => {
     if ("scheduledEnd" in changes) {
         refresh();
     }
 });
-
-refresh();
