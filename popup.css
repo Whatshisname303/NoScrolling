@@ -1,3 +1,61 @@
 .no-display {
     display: none;
 }
+
+body {
+    background-color: #292A2D;
+    width: 12rem;
+    border-radius: 50px;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #de4854;
+    font-family: Helvetica;
+    text-decoration: underline;
+}
+
+
+p {
+    color: #B1B4B2;
+}
+
+#scheduling-wrapper input {
+    display: inline;
+    width: 3rem;
+    color: white;
+    text-align: center;
+    background-color: #202124;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    border: none;
+    border-radius: 4px;
+}
+
+
+.ffbutton {
+    background-color: rgb(101, 101, 209);
+    border: none;
+    border-radius: 0.15rem;
+    padding: 0.3rem;
+    color: white;
+}
+
+/* CSS */
+button {
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    margin: 1.2rem 0;
+    font-family: sans-serif;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.8rem;
+    color: #fff;
+    background: linear-gradient(180deg, #e13030 0%, #d4404d 100%);
+}
+
+button:hover {
+    color: #e6e6e6;
+    background: linear-gradient(180deg, #c02a2a 0%, #b0343e 100%);
+}

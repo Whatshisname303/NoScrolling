@@ -47,8 +47,8 @@ document.getElementById("schedule-button").addEventListener("click", async () =>
         alert("cannot last 0 minutes");
         return;
     }
-    if (inputWhen < /*30*/ 0) {
-        alert("cannot start in less than 0 minutes");
+    if (inputWhen < 5) {
+        alert("cannot start in less than 5 minutes");
         return;
     }
 
